@@ -27,13 +27,23 @@ const Tree = () => {
     return sortedArray;
   };
 
-  return { buildTree };
+  const prettyPrint = (node, prefix = '', isLeft = true) => {
+    if (node.right !== null) {
+      prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+      prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+  };
+
+  return { buildTree, prettyPrint };
 };
 
 const binaryTree = Tree();
-const treeArray = [1, 4, 6, 7, 2, 9, 11];
+const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5];
 const endOfArray = treeArray.length - 1;
-console.log(binaryTree.buildTree(treeArray, 0, endOfArray));
+binaryTree.prettyPrint(binaryTree.buildTree(treeArray, 0, endOfArray));
 
 function mergeSort(array) {
   if (array.length <= 1) {
