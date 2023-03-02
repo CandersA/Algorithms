@@ -155,6 +155,29 @@ const Tree = () => {
     return postOrderArr;
   };
 
+  const getHeight = (node, height = 0) => {
+    if (node.right === null && node.left === null) {
+      return height;
+    }
+    if (node.right !== null) {
+      height += 1;
+      return getHeight(node.right, height);
+    }
+    height += 1;
+    return getHeight(node.left, height);
+  };
+
+  const getDepth = (root, node, depth = 0) => {
+    if (root === null || root === node) {
+      return depth;
+    } if (root.data < node.data) {
+      depth += 1;
+      return getDepth(root.right, node, depth);
+    }
+    depth += 1;
+    return getDepth(root.left, node, depth);
+  };
+
   // This method is used to display the tree in the console
   const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
@@ -176,6 +199,8 @@ const Tree = () => {
     preOrder,
     inOrder,
     postOrder,
+    getHeight,
+    getDepth,
   };
 };
 
@@ -183,8 +208,8 @@ const binaryTree = Tree();
 const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5, 14, 15, 16, 21];
 const endOfArray = treeArray.length - 1;
 const root = binaryTree.buildTree(mergeSort(treeArray), 0, endOfArray);
-// binaryTree.insertKey(root, 15);
-// binaryTree.insertKey(root, 16);
+binaryTree.insertKey(root, 22);
+binaryTree.insertKey(root, 23);
 // binaryTree.insertKey(root, 21);
 // binaryTree.deleteKey(root, 21);
 binaryTree.prettyPrint(root);
@@ -192,3 +217,5 @@ binaryTree.prettyPrint(root);
 // console.log(binaryTree.preOrder(root));
 // console.log(binaryTree.inOrder(root));
 // console.log(binaryTree.postOrder(root));
+console.log(binaryTree.getHeight(binaryTree.searchTree(root, 9)));
+console.log(binaryTree.getDepth(root, binaryTree.searchTree(root, 16)));
