@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // eslint-disable-next-line import/extensions
 import mergeSort from './mergeSort.js';
 
@@ -58,7 +59,6 @@ const Tree = () => {
 
   const deleteKey = (root, key) => {
     if (root === null) {
-      console.log('Key not found');
       return root;
     }
     if (key < root.data) {
@@ -96,6 +96,65 @@ const Tree = () => {
     return minv;
   };
 
+  const levelOrder = (root) => {
+    const queue = [root];
+    const numArray = [];
+
+    // While queue is not empty
+    while (queue.length) {
+      // Take first element of queue
+      const node = queue.shift();
+
+      // If the first element has either left or right child push them to the queue
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+      // Add data of node to numArray so it can be returned
+      numArray.push(node.data);
+    }
+
+    return numArray;
+  };
+
+  const preOrder = (root, preOrderArr = []) => {
+    if (root === null) {
+      return;
+    }
+    preOrderArr.push(root.data);
+    preOrder(root.left, preOrderArr);
+    preOrder(root.right, preOrderArr);
+
+    // eslint-disable-next-line consistent-return
+    return preOrderArr;
+  };
+
+  const inOrder = (root, inOrderArr = []) => {
+    if (root === null) {
+      return;
+    }
+    inOrder(root.left, inOrderArr);
+    inOrderArr.push(root.data);
+    inOrder(root.right, inOrderArr);
+
+    // eslint-disable-next-line consistent-return
+    return inOrderArr;
+  };
+
+  const postOrder = (root, postOrderArr = []) => {
+    if (root === null) {
+      return;
+    }
+    postOrder(root.left, postOrderArr);
+    postOrder(root.right, postOrderArr);
+    postOrderArr.push(root.data);
+
+    // eslint-disable-next-line consistent-return
+    return postOrderArr;
+  };
+
   // This method is used to display the tree in the console
   const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
@@ -113,15 +172,23 @@ const Tree = () => {
     searchTree,
     insertKey,
     deleteKey,
+    levelOrder,
+    preOrder,
+    inOrder,
+    postOrder,
   };
 };
 
 const binaryTree = Tree();
-const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5, 14];
+const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5, 14, 15, 16, 21];
 const endOfArray = treeArray.length - 1;
 const root = binaryTree.buildTree(mergeSort(treeArray), 0, endOfArray);
-binaryTree.insertKey(root, 15);
-binaryTree.insertKey(root, 16);
-binaryTree.insertKey(root, 21);
-binaryTree.deleteKey(root, 21);
+// binaryTree.insertKey(root, 15);
+// binaryTree.insertKey(root, 16);
+// binaryTree.insertKey(root, 21);
+// binaryTree.deleteKey(root, 21);
 binaryTree.prettyPrint(root);
+// console.log(binaryTree.levelOrder(root));
+// console.log(binaryTree.preOrder(root));
+// console.log(binaryTree.inOrder(root));
+// console.log(binaryTree.postOrder(root));
