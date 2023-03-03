@@ -155,18 +155,15 @@ const Tree = () => {
     return postOrderArr;
   };
 
-  const getHeight = (node, height = 0) => {
-    if (node.right === null && node.left === null) {
-      return height;
+  // Height is defined as the number of edges in longest path from a given node to a leaf node.
+  const getHeight = (node) => {
+    if (node == null) {
+      return 0;
     }
-    if (node.right !== null) {
-      height += 1;
-      return getHeight(node.right, height);
-    }
-    height += 1;
-    return getHeight(node.left, height);
+    return Math.max(getHeight(node.left), getHeight(node.right)) + 1;
   };
 
+  // Depth is defined as the number of edges in path from a given node to the tree’s root node.
   const getDepth = (root, node, depth = 0) => {
     if (root === null || root === node) {
       return depth;
@@ -176,6 +173,35 @@ const Tree = () => {
     }
     depth += 1;
     return getDepth(root.left, node, depth);
+  };
+
+  /* A balanced tree is one where the difference between heights of left subtree and right
+  subtree of every node is not more than 1. */
+  const isBalanced = (root) => {
+    if (root === null) {
+      return true;
+    }
+
+    const lh = getHeight(root.left);
+    const rh = getHeight(root.right);
+
+    if (Math.abs(lh - rh) <= 1 && isBalanced(
+      root.left,
+    ) === true && isBalanced(root.right) === true) {
+      return true;
+    }
+
+    return false;
+  };
+
+  /* Pass an in order array, which is gotten from unbalanced tree with breath-first traversal,
+  build balanced tree from new array */
+  const rebalance = (root) => {
+    const levelOrderArr = levelOrder(root);
+    const arrayEnd = levelOrderArr.length - 1;
+    root = buildTree(levelOrderArr, 0, arrayEnd);
+
+    return root;
   };
 
   // This method is used to display the tree in the console
@@ -201,21 +227,27 @@ const Tree = () => {
     postOrder,
     getHeight,
     getDepth,
+    isBalanced,
+    rebalance,
   };
 };
 
+// My test area ;)
 const binaryTree = Tree();
 const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5, 14, 15, 16, 21];
 const endOfArray = treeArray.length - 1;
-const root = binaryTree.buildTree(mergeSort(treeArray), 0, endOfArray);
+let root = binaryTree.buildTree(mergeSort(treeArray), 0, endOfArray);
 binaryTree.insertKey(root, 22);
 binaryTree.insertKey(root, 23);
-// binaryTree.insertKey(root, 21);
-// binaryTree.deleteKey(root, 21);
+// binaryTree.deleteKey(root, 22);
 binaryTree.prettyPrint(root);
 // console.log(binaryTree.levelOrder(root));
 // console.log(binaryTree.preOrder(root));
 // console.log(binaryTree.inOrder(root));
 // console.log(binaryTree.postOrder(root));
-console.log(binaryTree.getHeight(binaryTree.searchTree(root, 9)));
-console.log(binaryTree.getDepth(root, binaryTree.searchTree(root, 16)));
+// console.log(binaryTree.getHeight(binaryTree.searchTree(root, 8)));
+// console.log(binaryTree.getDepth(root, binaryTree.searchTree(root, 16)));
+console.log(binaryTree.isBalanced(root));
+root = binaryTree.rebalance(root);
+binaryTree.prettyPrint(root);
+console.log(binaryTree.isBalanced(root));
