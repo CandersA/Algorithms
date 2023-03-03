@@ -232,22 +232,44 @@ const Tree = () => {
   };
 };
 
+function randomArray(arrayLen) {
+  let i = 0;
+  const numArray = [];
+  while (i < arrayLen) {
+    const randomNum = Math.floor((Math.random() * 1000) + 1);
+    numArray.push(randomNum);
+    i += 1;
+  }
+  return [...new Set(numArray)];
+}
+
+function insertRandomNumbers(root, quantity) {
+  let i = 0;
+  while (i < quantity) {
+    const randomNum = Math.floor((Math.random() * 1000) + 1);
+    binaryTree.insertKey(root, randomNum);
+    i += 1;
+  }
+}
+
 // My test area ;)
 const binaryTree = Tree();
-const treeArray = [1, 4, 6, 7, 2, 9, 11, 8, 5, 14, 15, 16, 21];
+const treeArray = randomArray(100);
 const endOfArray = treeArray.length - 1;
 let root = binaryTree.buildTree(mergeSort(treeArray), 0, endOfArray);
-binaryTree.insertKey(root, 22);
-binaryTree.insertKey(root, 23);
+insertRandomNumbers(root, 20);
+// binaryTree.insertKey(root, 22);
+// binaryTree.insertKey(root, 23);
 // binaryTree.deleteKey(root, 22);
-binaryTree.prettyPrint(root);
-// console.log(binaryTree.levelOrder(root));
-// console.log(binaryTree.preOrder(root));
-// console.log(binaryTree.inOrder(root));
-// console.log(binaryTree.postOrder(root));
+// binaryTree.prettyPrint(root);
 // console.log(binaryTree.getHeight(binaryTree.searchTree(root, 8)));
 // console.log(binaryTree.getDepth(root, binaryTree.searchTree(root, 16)));
 console.log(binaryTree.isBalanced(root));
 root = binaryTree.rebalance(root);
 binaryTree.prettyPrint(root);
 console.log(binaryTree.isBalanced(root));
+
+// console.log(binaryTree.levelOrder(root));
+// console.log(binaryTree.preOrder(root));
+// console.log(binaryTree.inOrder(root));
+// console.log(binaryTree.postOrder(root));
